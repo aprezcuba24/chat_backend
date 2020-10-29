@@ -49,17 +49,19 @@ services:
     networks:
       - chat
 
-  #Postgresql Service
+  #MySQL Service
   db:
-    image: postgres:10.4-alpine
+    image: mysql:5.7.22
     container_name: chat_db
-    volumes:
-      - dbdata:/var/lib/postgresql/data
-      - dbdata:/backups
+    restart: unless-stopped
+    tty: true
     ports:
-      - "5432:5432"
+      - "3306:3306"
     env_file:
-      - postgres/.env
+      - mysql/.env
+    volumes:
+      - dbdata:/var/lib/mysql
+      - ./mysql/my.cnf:/etc/mysql/my.cnf
     networks:
       - chat
 

@@ -13,7 +13,9 @@
 	"runServices": [
 		"app",
 		"web",
-		"db"
+		"db",
+		"mercure",
+		"redis"
 	],
 		
 	// Use 'appPort' to create a container with published ports. If the port isn't working, be sure
