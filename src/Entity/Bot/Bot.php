@@ -4,9 +4,11 @@ namespace App\Entity\Bot;
 
 use App\Repository\Bot\BotRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ORM\Entity(repositoryClass=BotRepository::class)
+ * @ApiResource
  */
 class Bot
 {

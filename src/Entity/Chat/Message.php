@@ -5,9 +5,11 @@ namespace App\Entity\Chat;
 use App\Entity\User;
 use App\Repository\Chat\MessageRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ORM\Entity(repositoryClass=MessageRepository::class)
+ * @ApiResource
  */
 class Message
 {
