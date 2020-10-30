@@ -1,0 +1,5 @@
+App\Entity\Chat\Workspace:
+  workspace_1:
+    name: Workspace 1
+  workspace_2:
+    name: Workspace 2

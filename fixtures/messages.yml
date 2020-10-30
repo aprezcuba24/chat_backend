@@ -1,0 +1,17 @@
+App\Entity\Chat\Message:
+  message_1_1_general:
+    body: First message
+    channel: '@channel_1_general'
+    owner: '@user_1'
+  message_2_1_general:
+    body: Second message
+    channel: '@channel_1_random'
+    owner: '@user_2'
+  message_1_2_general:
+    body: First message
+    channel: '@channel_2_general'
+    owner: '@user_1'
+  message_2_2_general:
+    body: Second message
+    channel: '@channel_2_random'
+    owner: '@user_2'

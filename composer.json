@@ -18,6 +18,7 @@
         "symfony/yaml": "5.1.*"
     },
     "require-dev": {
+        "hautelook/alice-bundle": "^2.8"
     },
     "config": {
         "optimize-autoloader": true,
