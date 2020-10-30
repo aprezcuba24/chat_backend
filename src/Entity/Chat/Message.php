@@ -9,7 +9,9 @@ use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ORM\Entity(repositoryClass=MessageRepository::class)
- * @ApiResource
+ * @ApiResource(
+ *  attributes={"security"="is_granted('ROLE_USER')"}
+ * )
  */
 class Message
 {

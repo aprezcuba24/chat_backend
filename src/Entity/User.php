@@ -14,7 +14,9 @@ use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @ApiResource
+ * @ApiResource(
+ *  attributes={"security"="is_granted('ROLE_USER')"}
+ * )
  */
 class User implements UserInterface
 {

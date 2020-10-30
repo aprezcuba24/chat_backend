@@ -11,7 +11,9 @@ use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ORM\Entity(repositoryClass=ChannelRepository::class)
- * @ApiResource
+ * @ApiResource(
+ *  attributes={"security"="is_granted('ROLE_USER')"}
+ * )
  */
 class Channel
 {

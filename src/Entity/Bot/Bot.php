@@ -8,7 +8,9 @@ use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ORM\Entity(repositoryClass=BotRepository::class)
- * @ApiResource
+ * @ApiResource(
+ *  attributes={"security"="is_granted('ROLE_USER')"}
+ * )
  */
 class Bot
 {
