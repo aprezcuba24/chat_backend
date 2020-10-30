@@ -32,7 +32,10 @@
         "symfony/yaml": "5.1.*"
     },
     "require-dev": {
-        "hautelook/alice-bundle": "^2.8"
+        "hautelook/alice-bundle": "^2.8",
+        "symfony/browser-kit": "5.1.*",
+        "symfony/http-client": "5.1.*",
+        "symfony/phpunit-bridge": "^5.1"
     },
     "config": {
         "optimize-autoloader": true,
