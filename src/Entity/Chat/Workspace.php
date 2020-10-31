@@ -8,11 +8,19 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=WorkspaceRepository::class)
  * @ApiResource(
- *  attributes={"security"="is_granted('ROLE_USER')"}
+ *  attributes={"security"="is_granted('ROLE_USER')"},
+ *  normalizationContext={"groups"={"workspace:read"}},
+ *  input=Workspace::class,
+ *  itemOperations={
+ *    "get",
+ *    "put" = { "security" = "is_granted('WORKSAPCE_EDIT', object)" },
+ *    "delete" = { "security" = "is_granted('WORKSAPCE_DELETE', object)" }
+ *  }
  * )
  */
 class Workspace
@@ -21,11 +29,13 @@ class Workspace
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"workspace:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"workspace:read"})
      */
     private $name;
 
@@ -39,10 +49,26 @@ class Workspace
      */
     private $channels;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="ownWorkspaces")
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups({"workspace:read"})
+     */
+    private $owner;
+
     public function __construct()
     {
         $this->members = new ArrayCollection();
         $this->channels = new ArrayCollection();
+    }
+
+    public function isOwner(User $user)
+    {
+        if (!$this->getOwner()) {
+            return false;
+        }
+
+        return $this->getOwner()->getId() === $user->getId();
     }
 
     public function getId(): ?int
@@ -70,7 +96,7 @@ class Workspace
         return $this->members;
     }
 
-    public function addUser(User $user): self
+    public function addMember(User $user): self
     {
         if (!$this->members->contains($user)) {
             $this->members[] = $user;
@@ -79,7 +105,7 @@ class Workspace
         return $this;
     }
 
-    public function removeUser(User $user): self
+    public function removeMember(User $user): self
     {
         $this->members->removeElement($user);
 
@@ -112,6 +138,18 @@ class Workspace
                 $channel->setWorkspace(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?User $owner): self
+    {
+        $this->owner = $owner;
 
         return $this;
     }

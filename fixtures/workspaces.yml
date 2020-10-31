@@ -1,5 +1,10 @@
 App\Entity\Chat\Workspace:
   workspace_1:
     name: Workspace 1
+    owner: '@user_1'
   workspace_2:
     name: Workspace 2
+    owner: '@user_2'
+  workspace_3:
+    name: Workspace 3
+    owner: '@user_1'

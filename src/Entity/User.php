@@ -68,11 +68,17 @@ class User implements UserInterface
      */
     private $username;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Workspace::class, mappedBy="owner", orphanRemoval=true)
+     */
+    private $ownWorkspaces;
+
     public function __construct()
     {
         $this->workspaces = new ArrayCollection();
         $this->channels = new ArrayCollection();
         $this->messages = new ArrayCollection();
+        $this->ownWorkspaces = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -177,7 +183,7 @@ class User implements UserInterface
     {
         if (!$this->workspaces->contains($workspace)) {
             $this->workspaces[] = $workspace;
-            $workspace->addUser($this);
+            $workspace->addMember($this);
         }
 
         return $this;
@@ -186,7 +192,7 @@ class User implements UserInterface
     public function removeWorkspace(Workspace $workspace): self
     {
         if ($this->workspaces->removeElement($workspace)) {
-            $workspace->removeUser($this);
+            $workspace->removeMember($this);
         }
 
         return $this;
@@ -252,6 +258,36 @@ class User implements UserInterface
     public function setUsername(string $username): self
     {
         $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Workspace[]
+     */
+    public function getOwnWorkspaces(): Collection
+    {
+        return $this->ownWorkspaces;
+    }
+
+    public function addOwnWorkspace(Workspace $ownWorkspace): self
+    {
+        if (!$this->ownWorkspaces->contains($ownWorkspace)) {
+            $this->ownWorkspaces[] = $ownWorkspace;
+            $ownWorkspace->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOwnWorkspace(Workspace $ownWorkspace): self
+    {
+        if ($this->ownWorkspaces->removeElement($ownWorkspace)) {
+            // set the owning side to null (unless already changed)
+            if ($ownWorkspace->getOwner() === $this) {
+                $ownWorkspace->setOwner(null);
+            }
+        }
 
         return $this;
     }
