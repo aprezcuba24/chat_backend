@@ -4,13 +4,13 @@ namespace App\Tests\Api;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
 use App\Tests\Traits\JWTTrait;
-use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
+use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
 use App\Entity\User;
 use App\Entity\Chat\Workspace;
 
 class WorkspaceTest extends ApiTestCase
 {
-    use RefreshDatabaseTrait;
+    use ReloadDatabaseTrait;
     use JWTTrait;
 
     public function testList()
@@ -38,6 +38,31 @@ class WorkspaceTest extends ApiTestCase
         ]);
     }
 
+    public function testMembers()
+    {
+        $client = $this->getCreateClientJWT('user1@admin.com');
+
+        $iri = sprintf('%s/members', $this->findIriBy(Workspace::class, ['name' => 'Workspace 1']));
+        $response = $client->request('GET', $iri);
+        $this->assertResponseIsSuccessful();
+        $this->assertJsonContains([
+            '@context' => '/api/contexts/User',
+            '@id' => $iri,
+            '@type' => 'hydra:Collection',
+            'hydra:totalItems' => 3,
+        ]);
+
+        $iri = sprintf('%s/members', $this->findIriBy(Workspace::class, ['name' => 'Workspace 3']));
+        $response = $client->request('GET', $iri);
+        $this->assertResponseIsSuccessful();
+        $this->assertJsonContains([
+            '@context' => '/api/contexts/User',
+            '@id' => $iri,
+            '@type' => 'hydra:Collection',
+            'hydra:totalItems' => 0,
+        ]);
+    }
+
     public function testCreate()
     {
         $client = $this->getCreateClientJWT('user1@admin.com');
@@ -51,6 +76,16 @@ class WorkspaceTest extends ApiTestCase
             '@type' => 'Workspace',
             'name' => 'Workspace test',
             'owner' => $iri,
+        ]);
+        $content = \json_decode($response->getContent(), true);
+        $iri = sprintf('/api/workspaces/%s/members', $content['id']);
+        $response = $client->request('GET', $iri);
+        $this->assertResponseIsSuccessful();
+        $this->assertJsonContains([
+            '@context' => '/api/contexts/User',
+            '@id' => $iri,
+            '@type' => 'hydra:Collection',
+            'hydra:totalItems' => 1,
         ]);
     }
 

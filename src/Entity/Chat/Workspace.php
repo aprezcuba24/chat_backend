@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
@@ -19,8 +20,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *  itemOperations={
  *    "get",
  *    "put" = { "security" = "is_granted('WORKSAPCE_EDIT', object)" },
- *    "delete" = { "security" = "is_granted('WORKSAPCE_DELETE', object)" }
- *  }
+ *    "delete" = { "security" = "is_granted('WORKSAPCE_DELETE', object)" },
+ *  },
  * )
  */
 class Workspace
@@ -41,6 +42,7 @@ class Workspace
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class, inversedBy="workspaces")
+     * @ApiSubresource
      */
     private $members;
 
