@@ -8,11 +8,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 
 /**
  * @ORM\Entity(repositoryClass=ChannelRepository::class)
  * @ApiResource(
- *  attributes={"security"="is_granted('ROLE_USER')"}
+ *  attributes={"security"="is_granted('ROLE_USER')"},
+ *  normalizationContext={"groups"={"read"}},
  * )
  */
 class Channel
@@ -21,32 +24,38 @@ class Channel
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read"})
      */
     private $name;
 
     /**
      * @ORM\ManyToOne(targetEntity=Workspace::class, inversedBy="channels")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"read"})
      */
     private $workspace;
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class, inversedBy="channels")
+     * @ApiSubresource
      */
     private $members;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read"})
      */
     private $type;
 
     /**
      * @ORM\OneToMany(targetEntity=Message::class, mappedBy="channel")
+     * @ApiSubresource
      */
     private $messages;
 

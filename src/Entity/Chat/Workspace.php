@@ -48,6 +48,7 @@ class Workspace
 
     /**
      * @ORM\OneToMany(targetEntity=Channel::class, mappedBy="workspace")
+     * @ApiSubresource
      */
     private $channels;
 
