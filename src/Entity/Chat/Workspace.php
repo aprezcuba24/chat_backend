@@ -16,7 +16,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ApiResource(
  *  attributes={"security"="is_granted('ROLE_USER')"},
  *  normalizationContext={"groups"={"workspace:read"}},
- *  input=Workspace::class,
  *  itemOperations={
  *    "get",
  *    "put" = { "security" = "is_granted('WORKSAPCE_EDIT', object)" },
