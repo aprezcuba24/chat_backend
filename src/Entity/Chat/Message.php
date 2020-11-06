@@ -6,12 +6,14 @@ use App\Entity\User;
 use App\Repository\Chat\MessageRepository;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
+use DateTime;
 
 /**
  * @ORM\Entity(repositoryClass=MessageRepository::class)
  * @ApiResource(
- *  attributes={"security"="is_granted('ROLE_USER')"}
+ *  attributes={"security"="is_granted('WORKSPACE_ACTIVE')"}
  * )
+ * @ORM\HasLifecycleCallbacks
  */
 class Message
 {
@@ -38,6 +40,29 @@ class Message
      * @ORM\JoinColumn(nullable=false)
      */
     private $owner;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $updatedAt;
+
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function updatedTimestamps(): void
+    {
+        $dateTimeNow = new DateTime('now');
+        $this->setUpdatedAt($dateTimeNow);
+        if ($this->getCreatedAt() === null) {
+            $this->setCreatedAt($dateTimeNow);
+        }
+    }
 
     public function getId(): ?int
     {
@@ -76,6 +101,30 @@ class Message
     public function setOwner(?User $owner): self
     {
         $this->owner = $owner;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

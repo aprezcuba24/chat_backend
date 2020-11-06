@@ -1,0 +1,17 @@
+App\Entity\Chat\Channel:
+  channel_1_general:
+    name: General 1
+    workspace: '@workspace_1'
+    type: WORKSPACE
+  channel_1_random:
+    name: Random 1
+    workspace: '@workspace_1'
+    type: WORKSPACE
+  channel_2_general:
+    name: General 2
+    workspace: '@workspace_2'
+    type: WORKSPACE
+  channel_2_random:
+    name: Random 2
+    workspace: '@workspace_2'
+    type: WORKSPACE

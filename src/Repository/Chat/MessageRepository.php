@@ -5,6 +5,7 @@ namespace App\Repository\Chat;
 use App\Entity\Chat\Message;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * @method Message|null find($id, $lockMode = null, $lockVersion = null)
@@ -17,6 +18,14 @@ class MessageRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Message::class);
+    }
+
+    public function orderByCreatedAt(QueryBuilder $queryBuilder)
+    {
+        $rootAlias = $queryBuilder->getRootAliases()[0];
+        return $queryBuilder
+            ->orderBy(\sprintf('%s.createdAt', $rootAlias), 'DESC')
+        ;
     }
 
     // /**

@@ -1,5 +1,5 @@
 App\Entity\Chat\Message:
-  message_{1..3}:
+  message_1_1_general:
     body: First message
     channel: '@channel_1_general'
     owner: '@user_1'
