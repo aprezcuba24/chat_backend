@@ -19,7 +19,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ApiResource(
  *  normalizationContext={"groups"={"read"}},
  *  attributes={
- *      "security"="is_granted('ROLE_USER')",
+ *      "security"="is_granted('WORKSPACE_ACTIVE')",
  *  },
  * )
  */

@@ -23,7 +23,7 @@ class WorkspaceTest extends ApiTestCase
             '@context' => '/api/contexts/Workspace',
             '@id' => '/api/workspaces',
             '@type' => 'hydra:Collection',
-            'hydra:totalItems' => 2,
+            'hydra:totalItems' => 3,
         ]);
 
         // One Workspace
@@ -35,31 +35,6 @@ class WorkspaceTest extends ApiTestCase
             '@id' => '/api/workspaces',
             '@type' => 'hydra:Collection',
             'hydra:totalItems' => 1,
-        ]);
-    }
-
-    public function testMembers()
-    {
-        $client = $this->getCreateClientJWT('user1@admin.com');
-
-        $iri = sprintf('%s/members', $this->findIriBy(Workspace::class, ['name' => 'Workspace 1']));
-        $response = $client->request('GET', $iri);
-        $this->assertResponseIsSuccessful();
-        $this->assertJsonContains([
-            '@context' => '/api/contexts/User',
-            '@id' => $iri,
-            '@type' => 'hydra:Collection',
-            'hydra:totalItems' => 3,
-        ]);
-
-        $iri = sprintf('%s/members', $this->findIriBy(Workspace::class, ['name' => 'Workspace 3']));
-        $response = $client->request('GET', $iri);
-        $this->assertResponseIsSuccessful();
-        $this->assertJsonContains([
-            '@context' => '/api/contexts/User',
-            '@id' => $iri,
-            '@type' => 'hydra:Collection',
-            'hydra:totalItems' => 0,
         ]);
     }
 
@@ -77,13 +52,13 @@ class WorkspaceTest extends ApiTestCase
             'name' => 'Workspace test',
             'owner' => $iri,
         ]);
-        $content = \json_decode($response->getContent(), true);
-        $iri = sprintf('/api/workspaces/%s/members', $content['id']);
-        $response = $client->request('GET', $iri);
+        // $client = $this->getCreateClientJWT('user1@admin.com', 'Workspace test');
+        $this->addTokenByWorkspace($client, 'Workspace test');
+        $response = $client->request('GET', '/api/users');
         $this->assertResponseIsSuccessful();
         $this->assertJsonContains([
             '@context' => '/api/contexts/User',
-            '@id' => $iri,
+            '@id' => '/api/users',
             '@type' => 'hydra:Collection',
             'hydra:totalItems' => 1,
         ]);

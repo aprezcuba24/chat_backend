@@ -8,6 +8,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
@@ -34,6 +35,15 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $user->setPassword($newEncodedPassword);
         $this->_em->persist($user);
         $this->_em->flush();
+    }
+
+    public function findByWorkspace(QueryBuilder $queryBuilder, $workspaceId)
+    {
+        $rootAlias = $queryBuilder->getRootAliases()[0];
+        $queryBuilder
+            ->join(sprintf('%s.workspaces', $rootAlias), 'workspace')
+            ->andWhere('workspace.id = :workspace')
+            ->setParameter('workspace', $workspaceId);
     }
 
     // /**
