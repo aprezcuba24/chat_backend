@@ -5,6 +5,7 @@ namespace App\Repository\Chat;
 use App\Entity\Chat\Channel;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * @method Channel|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,32 +20,11 @@ class ChannelRepository extends ServiceEntityRepository
         parent::__construct($registry, Channel::class);
     }
 
-    // /**
-    //  * @return Channel[] Returns an array of Channel objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findByWorkspace(QueryBuilder $queryBuilder, $workspaceId)
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $rootAlias = $queryBuilder->getRootAliases()[0];
+        $queryBuilder
+            ->andWhere(sprintf('%s.workspace = :workspace', $rootAlias))
+            ->setParameter('workspace', $workspaceId);
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Channel
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

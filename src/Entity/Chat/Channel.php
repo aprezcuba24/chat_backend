@@ -14,12 +14,14 @@ use ApiPlatform\Core\Annotation\ApiSubresource;
 /**
  * @ORM\Entity(repositoryClass=ChannelRepository::class)
  * @ApiResource(
- *  attributes={"security"="is_granted('ROLE_USER')"},
+ *  attributes={"security"="is_granted('WORKSPACE_ACTIVE')"},
  *  normalizationContext={"groups"={"read"}},
  * )
  */
 class Channel
 {
+    const WORKSPACE_TYPE = 'WORKSPACE';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -63,6 +65,7 @@ class Channel
     {
         $this->members = new ArrayCollection();
         $this->messages = new ArrayCollection();
+        $this->setType(self::WORKSPACE_TYPE);
     }
 
     public function getId(): ?int

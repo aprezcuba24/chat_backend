@@ -7,19 +7,19 @@ use App\Tests\Traits\JWTTrait;
 use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
 use App\Entity\Chat\Channel;
 
-class MessageTest extends ApiTestCase
-{
-    use JWTTrait;
-    use ReloadDatabaseTrait;
+// class MessageTest extends ApiTestCase
+// {
+//     use JWTTrait;
+//     use ReloadDatabaseTrait;
 
-    public function testCreate()
-    {
-        $client = $this->getCreateClientJWT('user1@admin.com');
-        $channelIri = $this->findIriBy(Channel::class, ['name' => 'General 1']);
-        $response = $client->request('POST', '/api/messages', ['json' => [
-            'body' => 'Message test',
-            'channel' => $channelIri,
-        ]]);
-        $this->assertResponseIsSuccessful();
-    }
-}
+//     public function testCreate()
+//     {
+//         $client = $this->getCreateClientJWT('user1@admin.com');
+//         $channelIri = $this->findIriBy(Channel::class, ['name' => 'General 1']);
+//         $response = $client->request('POST', '/api/messages', ['json' => [
+//             'body' => 'Message test',
+//             'channel' => $channelIri,
+//         ]]);
+//         $this->assertResponseIsSuccessful();
+//     }
+// }
