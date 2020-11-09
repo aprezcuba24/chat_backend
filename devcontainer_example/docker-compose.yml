@@ -17,6 +17,7 @@ services:
       - web
       - db
       - mercure
+      - redis
     ports:
       - "8000:8000"
     environment:
@@ -72,6 +73,8 @@ services:
       - mercure/.env
     ports:
       - "9090:80"
+    networks:
+      - chat
 
   redis:
     image: redis:3.2

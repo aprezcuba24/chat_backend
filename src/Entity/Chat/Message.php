@@ -11,7 +11,8 @@ use DateTime;
 /**
  * @ORM\Entity(repositoryClass=MessageRepository::class)
  * @ApiResource(
- *  attributes={"security"="is_granted('WORKSPACE_ACTIVE')"}
+ *  attributes={"security"="is_granted('WORKSPACE_ACTIVE')"},
+ *  mercure=true,
  * )
  * @ORM\HasLifecycleCallbacks
  */
