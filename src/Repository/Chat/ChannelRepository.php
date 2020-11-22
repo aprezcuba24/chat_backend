@@ -20,11 +20,16 @@ class ChannelRepository extends ServiceEntityRepository
         parent::__construct($registry, Channel::class);
     }
 
-    public function findByWorkspace(QueryBuilder $queryBuilder, $workspaceId)
+    public function findByWorkspace($workspaceId, QueryBuilder $queryBuilder = null)
     {
+        if (!$queryBuilder) {
+            $queryBuilder = $this->createQueryBuilder('channel');
+        }
         $rootAlias = $queryBuilder->getRootAliases()[0];
         $queryBuilder
             ->andWhere(sprintf('%s.workspace = :workspace', $rootAlias))
             ->setParameter('workspace', $workspaceId);
+
+        return $queryBuilder;
     }
 }

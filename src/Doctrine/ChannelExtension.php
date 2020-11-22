@@ -14,6 +14,6 @@ class ChannelExtension extends BaseFilterByWorkspaceExtension
 
     protected function buildQuery(QueryBuilder $queryBuilder, $workspaceId)
     {
-        $this->entityManager->getRepository(Channel::class)->findByWorkspace($queryBuilder, $workspaceId);
+        $this->entityManager->getRepository(Channel::class)->findByWorkspace($workspaceId, $queryBuilder);
     }
 }

@@ -9,3 +9,5 @@ api_platform:
             apiKey:
                name: Authorization
                type: header
+    mercure:
+        hub_url: '%env(MERCURE_SUBSCRIBE_URL)%'

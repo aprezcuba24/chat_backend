@@ -7,12 +7,13 @@ use App\Repository\Chat\MessageRepository;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use DateTime;
+use App\Mercure\ConfigGenerator;
 
 /**
  * @ORM\Entity(repositoryClass=MessageRepository::class)
  * @ApiResource(
  *  attributes={"security"="is_granted('WORKSPACE_ACTIVE')"},
- *  mercure=true,
+ *  mercure="object.getMercureOptions()",
  * )
  * @ORM\HasLifecycleCallbacks
  */
@@ -63,6 +64,11 @@ class Message
         if ($this->getCreatedAt() === null) {
             $this->setCreatedAt($dateTimeNow);
         }
+    }
+
+    public function getMercureOptions()
+    {
+        return (new ConfigGenerator)($this);
     }
 
     public function getId(): ?int
