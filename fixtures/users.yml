@@ -7,19 +7,23 @@ App\Entity\User:
     username: user1
     email: user1@admin.com
     password: <{hash}>
+    photo: https://i.pravatar.cc/150?img=47
     workspaces: ['@workspace_1', '@workspace_2']
   user_2:
     username: user2
     email: user2@admin.com
     password: <{hash}>
+    photo: https://i.pravatar.cc/150?img=48
     workspaces: ['@workspace_1', '@workspace_2']
   user_3:
     username: user3
     email: user3@admin.com
     password: <{hash}>
+    photo: https://i.pravatar.cc/150?img=44
     workspaces: ['@workspace_1']
   user_4:
     username: user4
     email: user4@admin.com
     password: <{hash}>
+    photo: https://i.pravatar.cc/150?img=45
     workspaces: ['@workspace_2']

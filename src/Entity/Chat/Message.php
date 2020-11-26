@@ -8,12 +8,14 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use DateTime;
 use App\Mercure\ConfigGenerator;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=MessageRepository::class)
  * @ApiResource(
  *  attributes={"security"="is_granted('WORKSPACE_ACTIVE')"},
  *  mercure="object.getMercureOptions()",
+ *  normalizationContext={"groups"={"message"}}
  * )
  * @ORM\HasLifecycleCallbacks
  */
@@ -23,33 +25,39 @@ class Message
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"message"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups({"message"})
      */
     private $body;
 
     /**
      * @ORM\ManyToOne(targetEntity=Channel::class, inversedBy="messages")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"message"})
      */
     private $channel;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="messages")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"message"})
      */
     private $owner;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"message"})
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"message"})
      */
     private $updatedAt;
 

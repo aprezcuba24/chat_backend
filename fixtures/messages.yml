@@ -3,6 +3,10 @@ App\Entity\Chat\Message:
     body: First message
     channel: '@channel_1_general'
     owner: '@user_1'
+  message_1_1_general:
+    body: Second message
+    channel: '@channel_1_general'
+    owner: '@user_2'
   message_2_1_general:
     body: Second message
     channel: '@channel_1_random'
