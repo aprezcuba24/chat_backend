@@ -39,6 +39,7 @@ abstract class BaseFilterByWorkspaceExtension implements QueryCollectionExtensio
         if (
             !$this->supports($resourceClass) ||
             $this->security->isGranted('ROLE_SUPER_ADMIN') ||
+            $this->security->isGranted('ROLE_BOT') ||
             null === $user = $this->security->getUser())
         {
             return;

@@ -36,3 +36,8 @@ services:
         decorates: 'api_platform.swagger.normalizer.documentation'
         arguments: ['@App\Swagger\SwaggerDecorator.inner']
         autoconfigure: false
+
+    App\EventSubscriber\MessageSubscriber:
+        tags:
+            - { name: 'doctrine.event_subscriber' }
+

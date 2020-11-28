@@ -15,7 +15,8 @@
 		"web",
 		"db",
 		"mercure",
-		"redis"
+		"redis",
+		"node"
 	],
 		
 	// Use 'appPort' to create a container with published ports. If the port isn't working, be sure

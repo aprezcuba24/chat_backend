@@ -2,6 +2,7 @@
 
 namespace App\Entity\Chat;
 
+use App\Entity\Bot\Bot;
 use App\Entity\User;
 use App\Repository\Chat\ChannelRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -61,11 +62,17 @@ class Channel
      */
     private $messages;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Bot::class, inversedBy="channels")
+     */
+    private $bots;
+
     public function __construct()
     {
         $this->members = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->setType(self::WORKSPACE_TYPE);
+        $this->bots = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -159,6 +166,30 @@ class Channel
                 $message->setChannel(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Bot[]
+     */
+    public function getBots(): Collection
+    {
+        return $this->bots;
+    }
+
+    public function addBot(Bot $bot): self
+    {
+        if (!$this->bots->contains($bot)) {
+            $this->bots[] = $bot;
+        }
+
+        return $this;
+    }
+
+    public function removeBot(Bot $bot): self
+    {
+        $this->bots->removeElement($bot);
 
         return $this;
     }

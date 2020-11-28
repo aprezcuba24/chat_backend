@@ -18,6 +18,7 @@ services:
       - db
       - mercure
       - redis
+      - node
     ports:
       - "8000:8000"
     environment:
@@ -32,6 +33,7 @@ services:
       - web
       - mercure
       - redis
+      - node
     networks:
       - chat
 
@@ -77,8 +79,23 @@ services:
       - chat
 
   redis:
-    image: redis:3.2
+    image: redis:alpine
     container_name: chat_redis
+    networks:
+      - chat
+
+  node:
+    image: "node:9.11"
+    user: "node"
+    container_name: chat_node_bot
+    working_dir: /var/www/node
+    environment:
+      - NODE_ENV=develop
+    volumes:
+      - ../node:/var/www/node
+    ports:
+      - "8081:8080"
+    command: "npm start"
     networks:
       - chat
 

@@ -19,6 +19,9 @@ class WorkspaceActiveVoter extends Voter
         if (!$user instanceof UserInterface) {
             return false;
         }
+        if (in_array('ROLE_BOT', $user->getRoles())) {
+            return true;
+        }
 
         return $token->getAttribute('workspace_id') != null;
     }

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Bot\Bot;
 use App\Entity\Chat\Channel;
 use App\Entity\Chat\Message;
 use App\Entity\Chat\Workspace;
@@ -34,7 +35,7 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\Column(type="string", length=180, unique=true, nullable=true)
      * @Groups({"read", "message"})
      */
     private $email;
@@ -46,7 +47,7 @@ class User implements UserInterface
 
     /**
      * @var string The hashed password
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     private $password;
 
@@ -81,6 +82,16 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity=Workspace::class, mappedBy="owner", orphanRemoval=true)
      */
     private $ownWorkspaces;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Bot::class, mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $bot;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $apiToken;
 
     public function __construct()
     {
@@ -125,6 +136,9 @@ class User implements UserInterface
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
+        if ($this->getApiToken()) {
+            $roles[] = 'ROLE_BOT';
+        }
 
         return array_unique($roles);
     }
@@ -297,6 +311,36 @@ class User implements UserInterface
                 $ownWorkspace->setOwner(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getBot(): ?Bot
+    {
+        return $this->bot;
+    }
+
+    public function setBot(?Bot $bot): self
+    {
+        $this->bot = $bot;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newUser = null === $bot ? null : $this;
+        if ($bot->getUser() !== $newUser) {
+            $bot->setUser($newUser);
+        }
+
+        return $this;
+    }
+
+    public function getApiToken(): ?string
+    {
+        return $this->apiToken;
+    }
+
+    public function setApiToken(?string $apiToken): self
+    {
+        $this->apiToken = $apiToken;
 
         return $this;
     }

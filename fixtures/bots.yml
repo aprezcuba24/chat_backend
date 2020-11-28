@@ -1,0 +1,7 @@
+App\Entity\Bot\Bot:
+  bot_1:
+    name: test_bot
+    username: test_bot
+    webhook: http://node:8080
+    channels: ['@channel_1_general']
+    user: '@user_bot'

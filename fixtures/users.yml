@@ -27,3 +27,7 @@ App\Entity\User:
     password: <{hash}>
     photo: https://i.pravatar.cc/150?img=45
     workspaces: ['@workspace_2']
+  user_bot:
+    username: bot
+    apiToken: secretKeyTest
+    photo: https://robohash.org/KKY.png?set=set1

@@ -10,6 +10,14 @@ security:
             entity:
                 class: App\Entity\User
                 property: email
+        bot_provider:
+            entity:
+                class: App\Entity\User
+                property: apiToken
+        all_users:
+            chain:
+                providers: ['app_user_provider', 'bot_provider']
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -18,7 +26,7 @@ security:
             pattern: ^/api/
             stateless: true
             anonymous: true
-            provider: app_user_provider
+            provider: all_users
             json_login:
                 check_path: /api/authentication_token
                 username_path: email
@@ -26,8 +34,10 @@ security:
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
             guard:
+                entry_point: lexik_jwt_authentication.jwt_token_authenticator
                 authenticators:
                     - lexik_jwt_authentication.jwt_token_authenticator
+                    - App\Security\TokenAuthenticator
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
